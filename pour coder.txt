@@ -1,2 +1,3 @@
 nom de fonction --> commence par une majuscule
-objet de catégorie Area -->
+objet de catégorie Area --> commence par Area
+nom d'entité --> tout en minuscule 

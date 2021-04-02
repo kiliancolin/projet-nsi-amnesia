@@ -2,3 +2,9 @@ void OnStart()
 {
     
 }
+
+void TouchLever(string &in asEntity)
+{
+    SetMessage("message","leviers",3);
+    SetEntityActive("invisible_box_lever",true);
+}
