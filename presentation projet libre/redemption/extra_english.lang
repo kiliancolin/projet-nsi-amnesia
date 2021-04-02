@@ -1,0 +1,123 @@
+<LANGUAGE>
+  <CATEGORY Name="CustomStoryMain">
+    <Entry Name="Description">Se réveiller, seul, dans un endroit inconnu.</Entry>
+  </CATEGORY>
+
+  <CATEGORY Name="Journal">
+    ====Note====
+    <Entry Name="Note_reve_Name">Rêve</Entry>
+    <Entry Name="Note_reve_Text">Jeudi 7 Mai 1793, [br][br]Cette nuit j'ai fais un rêve, un monde sans crime, un monde sans mal, un monde sans souffrance. C'était merveilleux [br] [br]Nicolas Marchal.</Entry>
+  
+    <Entry Name="Note_histoire_Name">Handersonberg</Entry>
+    <Entry Name="Note_histoire_Text">Histoire:[br][br]Le chateau d'Hendersonberg ce trouve dans la province de Prusse-Orientale. Il a été construit en 1944 sous l'ordre de Frédéric II de Prusse, suite à la guerre de 7 ans débutée en août 1756 le château a été laissé à l'abandon pendant 30 ans. C'est en effet le 24 septembre 1786 que les ruines du château sont racheté par Nicolas Marchal, un riche entrepreneur ayant pour objectif d'y faire des fouilles et rendre le lieu à nouveau habitable.[br] [br]Légende:[br][br]Bien que le château avait disparu de la mémoire de la majorité de la population, certaines populations locales racontaient encore qu'un mystérieux château abandonné se trouvait dans les forêt voisines. Dans le village de Schwienhaten les rumeurs ne s'arrêtaient pas là, peu après la fin de la geurre de 7 ans un enfant aurait disparu dans les bois, quelque jours après sa disparition un chasseur aurait retrouver un bras gelé dans la neige, le reste du corps n'a jamais pus être retrouver. Personne ne sait si ce bras appartenait à l'enfant. Personne ne sait pourquoi il a disparu. C'est donc probablement par manque de preuve que les gens du village ont commencé à dire que le château de Handersonberg était hanté.</Entry>
+  
+    <Entry Name="Note_hubkey_Name">La clef du Hall d'entrée</Entry>
+    <Entry Name="Note_hubkey_Text">J'en ai marre que tout le monde sortent sans finir son repas! J'ai fermé l'accès à la sortie et j'ai changé de place la clef du Hall d'entrée comme ça c'est moi qui déciderai quand ils pourront sortir.</Entry>
+
+    <Entry Name="Note_stock_Name">Stock</Entry>
+    <Entry Name="Note_stock_Text">En stock il reste:[br]-Une lanterne[br]-De l'huile[br]-Des briquets d'amadou[br]-Des sacs de grain[br]-Quelques outils[br][br]Les gens oublient toujours de revenir poser la lanterne après l'avoir utilisé donc je l'ai un peu caché, merci de la replacer là ou vous l'avez trouvé après utilisation.</Entry>
+
+    <Entry Name="Note_fievre_Name">Fièvre</Entry>
+    <Entry Name="Note_fievre_Text">Vendredi 13 Mai 1793,[br][br]depuis ce rêve je ne me sens pas très bien. J'ai mal au crâne et je n'arrive plus à dormir. Ce monde était si parfait, j'aimerais y retourner. Il n'y a qu'un seul moyen pour ça, le créé.[br][br]Nicolas Marchal.</Entry>
+
+    <Entry Name="Note_decouverte_Name">Découverte</Entry>
+    <Entry Name="Note_decouverte_Text">21 Mars 1793,[br][br]On m'a demandé de travailler ici étudier les origines de ce château et je suis spécialiser dans les structures qui nous sont contemporaine. Aujourd'hui en fouillant les catacombes nous avons trouver un mur qui sonnait creu. Nous l'avons donc cassé en pensant tomber sur une salle secrète ou une sorte de grotte. Mais nous avons trouvé une zone (nous ne savons pas si elle est affilié au chateau ou non) qui ne ressemble en rien au style dans lequel a été construit ce château. Plus de fouille seront nécessaire.[br][br]Wilheim Hirsch</Entry>
+
+    <Entry Name="Note_secret_Name">Clef de la cave</Entry>
+    <Entry Name="Note_secret_Text">J'ai caché la clef de la cave, si vous trouvez cette note évitez d'y aller, néanmoins si vous en avez vraiment besoin d'y aller j'ai caché la clef derrière l'armoire dans le 2ème dortoir. Pour le bien commun recachez la clef après et si vous n'avez pas vraiment besoin d'y aller n'y allez pas!</Entry>
+
+    <Entry Name="Note_clefcave_Name">Clef de la cave 2</Entry>
+    <Entry Name="Note_clefcave_Text">J'ai voulu aller à la cave pour aller me chercher à boire. J'ai vu quelque chose, j'ai vite pris ma bouteille et j'ai fuis. J'ai réussi à refermer la porte, quoi qu'il y est en bas je pense qu'il y est encore. En tout cas j'ai recaché la clef et elle est maintenant dans un endroit secret et oublié de tous pour qu'elle soit en sécurité, n'y allez pas, vraiment. La chose qui était en bas, j'ai l'impression qu'elle n'est pas seule, l'une d'entre elle m'a peut-être suivi pendant que je prenais la bouteille, faites attention même en dehors de la cave.</Entry>
+
+    <Entry Name="Note_bibliotheque_Text">Ce château possède bien des secrets, à sa conception cette zone servait d'archive, aujourd'hui elles a été transformé en dortoir.[br]Une partie des livres et autres cartes ont été déplacé en sécurité dans un endroit tenu secret.</Entry> 
+
+    <Entry Name="Note_suicide_Text">Lundi 15 Juin 1793,[br][br]je me suis enfermé parce que j'ai entendu une chose, elle a tué tout mes collègues et je n'ai pas trouver d'autres solution que de me caché ici et casser la serrure. Je pense pouvoir tenir encore 2 semaines. J'entends ces choses marcher derrière la porte, je vais essayer de ne pas attirer leur attention.</Entry>
+
+    ====Memento====
+    <Entry Name="Quest_door1_Text">La porte est fermée à clef je dois trouver un moyen d'entrer</Entry>
+    <Entry Name="Quest_level1_Text">Il faut que je trouve la clef du Hall d'entrée pour trouver des réponses</Entry>
+
+    <Entry Name="Quest_removeplank2_Text">La porte de la cave est barricadée et la porte est fermée à clef</Entry>
+    <Entry Name="Quest_unlockcave_Text">Maintenant je n'ai plus qu'à dévérouiller la porte</Entry>
+
+    <Entry Name="Quest_key_cave1_Text">La clef de la cave se trouve derrière une armoire dans le 2ème dortoir</Entry>
+    <Entry Name="Quest_key_cave2_Text">La clef de la cave a été recaché dans endroit secret</Entry>
+    <Entry Name="Quest_secretpassage_Text">Je sens comme un courrant d'air derrière cette étagère</Entry>
+
+    <Entry Name="Quest_keyappartement_Text">La clef de l'appartement est sous le tapis</Entry>
+    <Entry Name="Quest_passage_Text">Le mur dans le salon est fragile, je devrai pouvoir le casser en lançant quelque chose dessus</Entry>
+    <Entry Name="Quest_removeplank1_Text">La porte vers la chambre est bloquée par des planches</Entry>
+  </CATEGORY>
+
+  ====Panneau===
+  <CATEGORY Name="Sign">
+    <Entry Name="Sign1">Stockage</Entry>
+    <Entry Name="Sign2">Cantine</Entry>
+
+    <Entry Name="dortoire1_1">Dortoir I</Entry>
+    <Entry Name="dortoire1_2">Dortoir II</Entry>
+    <Entry Name="dortoire2">Salle de conférence</Entry>
+    <Entry Name="dortoire3">Cartes et vieux livres</Entry>
+    <Entry Name="dortoire4">Boite d'archive</Entry>
+    <Entry Name="dortoire5">Histoire Locale</Entry>
+    
+    <Entry Name="cave1">Vin rouge</Entry>
+    <Entry Name="cave2">Laboratoire</Entry>
+    <Entry Name="cave3">Eau</Entry>
+    <Entry Name="cave4">Nitrine</Entry>
+  </CATEGORY>
+
+  ====Level Door====
+  <CATEGORY Name="Levels">
+    <Entry Name="level1">Hall d'entrée</Entry>
+    <Entry Name="hub1">Sous-sol</Entry>
+    <Entry Name="hub2">Dortoir</Entry>
+    <Entry Name="hub3">Appartement de Nicolas</Entry>
+    <Entry Name="hub4">Cave</Entry>
+    <Entry Name="dortoire1">Hall d'entrée</Entry>
+    <Entry Name="appartement1">Hall d'entrée</Entry>
+    <Entry Name="cave1">Hall d'entrée</Entry>
+  </CATEGORY>
+
+  ====Inventaire====
+
+  <CATEGORY Name="Inventory">
+    <Entry Name="ItemName_key1">Clef</Entry>
+    <Entry Name="ItemDesc_key1">Sur l'étiquette il est écrit "stockage".</Entry>
+    <Entry Name="ItemName_key2">Clef</Entry>
+    <Entry Name="ItemDesc_key2">Sur l'étiquette il est écrit "Hall d'entrée".</Entry>
+
+    <Entry Name="ItemName_key1dortoire">Clef</Entry>
+    <Entry Name="ItemDesc_key1dortoire">Sur l'étiquette il est écrit "Salle de conférence".</Entry>
+    <Entry Name="ItemName_key2dortoire">Clef</Entry>
+    <Entry Name="ItemDesc_key2dortoire">Sur l'étiquette il est écrit "Cartes et vieux livres".</Entry>
+    <Entry Name="ItemName_dortoire_keyCave">Clef</Entry>
+    <Entry Name="ItemDesc_dortoire_keyCave">L'étiquette n'est plus lisible</Entry>
+
+    <Entry Name="ItemName_level2_key1">Clef</Entry>
+    <Entry Name="ItemDesc_level2_key1">Sur l'étiquette il est écrit "Appartement de Nicolas".</Entry>
+    <Entry Name="ItemName_stone_hammer_1">Marteau en pierre</Entry>
+    <Entry Name="ItemDesc_stone_hammer_1">Il semble vieux et usé</Entry>
+
+    <Entry Name="ItemName_crowbar1">Pied de biche</Entry>
+    <Entry Name="ItemDesc_crowbar1">C'est un pied de biche, il semble un peu fragile</Entry>
+  </CATEGORY>
+
+====Message====
+<CATEGORY Name="message">
+  <Entry Name="bottlescare">Ce n'était qu'une bouteille...</Entry>
+
+  <Entry Name="LockedBigdoor1">La porte est fermée</Entry>
+  <Entry Name="leveldoor1">Je n'ai aucune raison de revenir en arrière</Entry>
+  <Entry Name="appartement">La clef... Elle doit être... sous le tapis.</Entry>
+
+  <Entry Name="locked_door">La porte est fermée</Entry>
+  <Entry Name="gruntspawn1">Qu'est ce que c'est que ça?</Entry>
+
+  <Entry Name="valve1">La valve est bloquée</Entry>
+  <Entry Name="body_cave1">Quelle horreur!</Entry>
+  <Entry Name="brocken_lock">La porte est fermée et la serrure est cassée</Entry>
+  <Entry Name="suicide_body">Le corps ne semble pas avoir plus de 2 jours</Entry>
+  <Entry Name="valve2">Le réservoir est vide</Entry>
+</CATEGORY>
+</LANGUAGE>

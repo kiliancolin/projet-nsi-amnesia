@@ -1,0 +1,105 @@
+void OnStart()
+{
+	PlayMusic("10_amb", true, 0.5, 4, 0, false);
+	AddUseItemCallback("", "stone_hammer_1", "plank1", "UseHammerOnPlank", true);
+	AddEntityCollideCallback("painting03_dynamic_1", "AreaPainting", "EventRemovePainting", true, -1);
+	AddEntityCollideCallback("Player", "playerlook_1", "PlayerLook1", false, 0);
+	AddEntityCollideCallback("Player", "AreaBloodScare", "BloodScare", false, 0);
+}
+
+void OnEnter()
+{
+	AutoSave();
+	PlayMusic("10_amb", true, 0.5, 4, 0, false);
+}
+
+//Porte de la chambre///////////////////////////
+void TouchDoor1Appartement(string& asEntity)
+{
+	AddQuest("removeplank1","removeplank1");
+}
+
+void UseHammerOnPlank(string &in asItem, string &in asEntity)
+{
+	SetSwingDoorLocked("door1_appartement", false, true);
+	SetEntityActive("plank1", false);
+	SetEntityActive("plank1_broken", true);
+	PlaySoundAtEntity("", "break_wood.snt", asEntity, 0, false);
+	CompleteQuest("removeplank1","removeplank1");
+}
+
+////////////////////////////////////////////////
+
+//Mur cassé/////////////////////////////////////
+void TouchPassage(string &in asEntity)
+{
+	int touchcount = GetLocalVarInt("TouchCount");
+ 
+	AddLocalVarInt("TouchCount", 1);
+	AddTimer("", 0.5, "TimerDecreaseTouchCount");
+ 
+	CreateParticleSystemAtEntity("", "ps_dust_impact.ps", "AreaParticle_" + RandInt(1, 4), false);
+ 
+	if (touchcount == 4)
+	{
+		SetPropHealth("passage", 0);
+	}
+ 
+	if (GetTimerTimeLeft("limitsound") == 0)
+	{
+		AddTimer("limitsound", 0.5, "");
+ 
+		PlayGuiSound("impact_rock_low3.ogg", 1);
+		PlayGuiSound("15_rock_break", 1);
+	}
+
+	if (GetPropHealth("passage") == 0)
+	{
+		SetEntityPlayerInteractCallback("area_touchpassage", "TouchPassage", true);
+		SetEntityActive("area_touchpassage", false);
+		CompleteQuest("passage", "passage");
+	}
+}
+
+void TimerDecreaseTouchCount(string &in asTimer)
+{
+	AddLocalVarInt("TouchCount", -1);
+}
+
+void BreakWall(string &in asEntity, string &in type)
+{
+	SetEntityActive("area_touchpassage", false);
+	CompleteQuest("passage", "passage");
+}
+
+void EventRemovePainting(string &in asParent, string &in asChild, int alState)
+{
+	AddTimer("", 0.5, "TimerRemovePainting");
+}
+
+void TimerRemovePainting(string &in asTimer)
+{
+	AddQuest("passage", "passage");
+}
+
+////////////////////////////////////////////////
+
+// Entrer dans la chambre //////////////////////
+void BloodScare(string &in asParent, string &in asChild, int alState)
+{
+	SetEntityActive("AreaBloodScare", false);
+	AddTimer("", 0.5, "TimerPlayerScare");
+	AddTimer("", 0.7, "TimerLookAtBlood");
+	StartPlayerLookAt("blood_spatter02_1", 5, 100, "");
+}
+
+void TimerPlayerScare(string &in asTimer)
+{
+	GiveSanityDamage(10, true);
+}
+
+void TimerLookAtBlood(string &in asTimer)
+{
+	StopPlayerLookAt();
+}
+////////////////////////////////////////////////

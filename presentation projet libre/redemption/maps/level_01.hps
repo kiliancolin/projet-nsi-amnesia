@@ -1,0 +1,66 @@
+void OnStart()
+{
+	SetPlayerLampOil(10);
+	PlayMusic("12_amb", true, 1, 4, 0, false);
+	AddUseItemCallback("", "key1", "door1", "UseKeyOnDoor", true);
+	AddUseItemCallback("", "key2", "level1", "UseKeyOnLevel", true);
+	AddEntityCollideCallback("Player", "AreaCollide", "EventCollide", true, 1);
+}
+
+// bouteille qui fait peur///////////////////
+void PickupKey1(string& asEntity)
+{
+	SetEntityActive("AreaCollide", true);
+}
+
+void EventCollide(string &in asParent, string &in asChild, int alState)
+{
+	SetEntityActive("wine02_7", false);
+	SetEntityActive("bottle_scare", true);
+	PlaySoundAtEntity("", "break_glass_bottle.snt", "bottle_scare", 0, false);
+	AddTimer("", 0.7, "TimerLookBottle");
+	AddTimer("", 0.5, "TimerPlayerScare");
+	AddTimer("", 1.5, "TimerMessage");
+	StartPlayerLookAt("bottle_scare", 5, 100, "");
+}
+
+void TimerLookBottle(string &in asTimer)
+{
+	StopPlayerLookAt();
+}
+void TimerPlayerScare(string &in asTimer)
+{
+	GiveSanityDamage(10, true);
+}
+
+void TimerMessage(string &in asTimer)
+{
+	SetMessage("message", "bottlescare", 3);
+}
+//////////////////////////////////////////////////////
+
+void UseKeyOnDoor(string &in asItem, string &in asEntity)
+{
+	SetSwingDoorLocked(asEntity, false, true);
+	PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+	RemoveItem(asItem);
+    CompleteQuest("door1", "door1");
+}
+
+void UseKeyOnLevel(string &in asItem, string &in asEntity)
+{
+	SetLevelDoorLocked("level1", false);
+	PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+	RemoveItem("key2");
+	CompleteQuest("level1", "level1");
+}
+
+void TouchDoor1(string& asEntity)
+{
+    AddQuest("door1", "door1");
+}
+
+void TouchLevel1(string& asEntity)
+{
+	AddQuest("level1", "level1");
+}

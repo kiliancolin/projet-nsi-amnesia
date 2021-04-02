@@ -1,0 +1,168 @@
+void OnStart()
+{
+	PlayMusic("03_amb", true, 0.5, 4, 0, false);
+	AddUseItemCallback("", "key1dortoire", "door1", "UseKeyOnDoor1", true);
+	AddUseItemCallback("", "key2dortoire", "door2", "UseKeyOnDoor2", true);
+	AddEntityCollideCallback("Player", "AreaCollide", "EventCollide", true, 1);
+	AddEntityCollideCallback("Player", "SoundArea_1", "EventSound_1", true, 1);
+}
+
+void OnEnter()
+{
+	AutoSave();
+	PlayMusic("03_amb", true, 0.5, 4, 0, false);
+}
+
+////////////////////Sons//////////////////////////////
+void EventSound_1(string &in asParent, string &in asChild, int alState)
+{
+	FadeInSound("SoundStep_1", 0, true);
+	AddTimer("", 2, "TimerSoundStep_1_1");
+}
+
+void TimerSoundStep_1_1(string &in asTimer)
+{
+	FadeInSound("SoundStep_2", 0, true);
+}
+//////////////////////////////////////////////////////
+
+//Note////////////////////////////////////////////////
+void TakeNote1(string& asEntity)
+{
+	AddQuest("key_cave1","key_cave1");
+}
+
+void TakeNote2(string& asEntity)
+{
+	CompleteQuest("key_cave1","key_cave1");
+	AddQuest("key_cave2","key_cave2");
+}
+void UseKeyOnDoor1(string &in asItem, string &in asEntity)
+{
+	SetEntityPlayerInteractCallback("door1", "door_dortoire_1", true);
+	SetSwingDoorLocked(asEntity, false, true);
+	PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+	RemoveItem("key1dortoire");
+}
+
+void UseKeyOnDoor2(string &in asItem, string &in asEntity)
+{
+	SetSwingDoorLocked(asEntity, false, true);
+	PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+	RemoveItem("key2dortoire");
+	SetEntityPlayerInteractCallback("door2", "door_dortoire_2", true);
+}
+
+void TouchOrb(string& asEntity)
+{
+	PlaySoundAtEntity("", "insanity_imageflash01.snt", asEntity, 0, false);
+	SetEntityPlayerInteractCallback("orb_1", "TouchOrb", true);
+	GiveSanityDamage(20, true);
+}
+
+void TouchBookshelf(string& asEntity)
+{
+	AddQuest("secretpassage", "secretpassage");
+	SetEntityPlayerInteractCallback("secretpassage", "TouchBookshelf", true);
+}
+
+void PickupKey(string& asEntity)
+{
+	SetEntityActive("AreaCollide", true);
+}
+
+void EventCollide(string &in asParent, string &in asChild, int alState)
+{
+	AddEntityCollideCallback("Player", "AreaGruntJumpScare", "EventGruntJumpScare", true, 1);
+	SetMessage("message", "gruntspawn1", 3);
+	PlaySoundAtEntity("", "react_sacre.snt", "Player", 0, false);
+	GiveSanityDamage(10, true);
+	SetEntityActive("servant_grunt_1", true);
+	AddEnemyPatrolNode("servant_grunt_1", "Node_1", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_2", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_3", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_4", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_5", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_6", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_7", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_8", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_9", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_10", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_11", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_12", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_13", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_14", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_15", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_16", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_17", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_18", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_19", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_20", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_21", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_22", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_23", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_24", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_25", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_26", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_27", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_28", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_29", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_30", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_31", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_32", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_33", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_34", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_35", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_36", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_37", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_38", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_39", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_40", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_41", 0.001f, "");
+	AddEnemyPatrolNode("servant_grunt_1", "Node_42", 0.001f, "");
+}
+//Faire bouger l'armoire/////////////////////////////////
+void MoveShelf(string &in asEntity, int alState)
+{
+	if (GetLocalVarInt("MoveShelf") == 0)
+	{
+		if (alState == -1)
+		{
+			CompleteQuest("secretpassage", "secretpassage");
+			SetMoveObjectState("secretpassage", 1);
+		}
+	}
+}
+
+void TouchSecretBook(string& asEntity)
+{
+	SetLightVisible("hint_light_1", false);
+}
+//////////////////////////////////////////////////////////
+
+//Grunt qui fait peur quand on sort///////////////////////
+void EventGruntJumpScare(string &in asParent, string &in asChild, int alState)
+{
+	AddTimer("", 0.5, "TimerGruntJumpScare");
+}
+
+void TimerGruntJumpScare(string &in asTimer)
+{
+	SetEntityActive("servant_grunt_fake_1", true);
+	ShowEnemyPlayerPosition("servant_grunt_fake_1");
+}
+
+void door_dortoire_1(string& asEntity)
+{
+	SetMessage("message", "locked_door", 2);
+}
+
+void door_dortoire_2(string& asEntity)
+{
+	SetMessage("message", "locked_door", 2);
+}
+
+void door_dortoire_3(string& asEntity)
+{
+	SetMessage("message", "locked_door", 2);
+}

@@ -1,0 +1,151 @@
+void OnStart()
+{
+	PlayMusic("02_amb_safe", true, 1, 4, 0, false);
+    AddUseItemCallback("", "stone_hammer_1", "plank2", "UseHammerOnPlank", true);
+    AddUseItemCallback("", "level2_key1", "appartement", "UseKeyOnAppartement", true);
+    AddEntityCollideCallback("Player", "AreaGruntScare", "EventGruntScare", true, 1);
+    AddEntityCollideCallback("servant_grunt_1", "AreaGruntDisable", "EventGruntDisable", true, 1);
+}
+
+void OnEnter()
+{
+    AutoSave();
+    PlayMusic("02_amb_safe", true, 1, 4, 0, false);
+    if (HasItem("stone_hammer_1"))
+    {
+        SetEntityActive("AreaGruntScare", true);
+    }
+}
+
+void UseKeyOnAppartement(string &in asItem, string &in asEntity)
+{
+    SetLevelDoorLocked("appartement", false);
+    PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+    CompleteQuest("keyappartement", "keyappartement");
+    RemoveItem("level2_key1");
+}
+//souvenir clef appartement///////////////////////////
+void TouchAppartement(string& asEntity)
+{
+    AddTimer("", 0.5, "TimerFlash");
+    AddTimer("", 1.5, "TimerMessage");
+    AddTimer("", 1.5, "TimerCarpet");
+    SetEntityPlayerInteractCallback("appartement", "TouchAppartement", true);
+}
+
+void TimerFlash(string &in asTimer)
+{
+    StartEffectFlash(0.5, 0, 1);
+    PlaySoundAtEntity("", "flashback_flash.snt", "Player", 0, false);
+}
+
+void TimerMessage(string &in asTimer)
+{
+    SetMessage("message", "appartement", 2);
+    AddQuest("keyappartement", "keyappartement");
+}
+
+void TimerCarpet(string &in asTimer)
+{
+    SetPropStaticPhysics("carpet_moveable_1", false);
+}
+
+////////////////////////////////////////////////
+
+// Quand on touche la grosse porte d'entrée/////
+void TouchBigDoor1(string& asEntity)
+{
+    SetMessage("message", "LockedBigdoor1", 2);
+    PlaySoundAtEntity("", "close_gate.snt", asEntity, 0, false);
+    SetEntityPlayerInteractCallback("castle_gate_arched01_1", "TouchBigDoor1", true);
+    AddTimer("", 1, "TimerToucheBigDoor");
+}
+
+void TimerToucheBigDoor(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("castle_gate_arched01_1", "TouchBigDoor1", false);
+}
+/////////////////////////////////////////////////
+
+void DoorFromLevel1(string& asEntity)
+{
+    SetMessage("message", "leveldoor1", 2);
+}
+
+//Event Grunt cellar////////////////////////////////////////
+void EventGruntScare(string &in asParent, string &in asChild, int alState)
+{
+    SetEntityActive("servant_grunt_1", true);
+    GiveSanityDamage(10, true);
+    SetPlayerMoveSpeedMul(0.3f);
+    SetSanityDrainDisabled(true);
+    SetLanternDisabled(true);
+    StartPlayerLookAt("AreaPlayerLook", 5, 50, "");
+    AddTimer("", 1, "TimerPlayerLook");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt_1", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt_2", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt_3", 0.001f, "");
+}
+
+void TimerPlayerLook(string &in asTimer)
+{
+    StopPlayerLookAt();
+}
+
+void EventGruntDisable(string &in asParent, string &in asChild, int alState)
+{
+    SetSwingDoorClosed("door1_autoclose", true, false);
+	SetSwingDoorDisableAutoClose("Door", true);
+ 
+	PlaySoundAtEntity("creak", "joint_door_move_special.snt", "door1_autoclose", 1, false);
+ 
+	AddTimer("", 0.3, "TimerStopSound");
+	AddTimer("Door", 0, "TimerMoveDoor");
+    SetPlayerMoveSpeedMul(1);
+    SetSanityDrainDisabled(false);
+    SetLanternDisabled(false);
+    SetEntityActive("servant_grunt_1", false);
+}
+
+void TimerMoveDoor(string &in asTimer)
+{
+	if(GetLocalVarInt("VarDoor") == 10) return;
+	AddLocalVarInt("VarDoor", 1);
+ 
+	AddTimer(asTimer, 0.03, "TimerMoveDoor");
+ 
+	AddPropForce(asTimer, 70, 0, 0, "world");
+}
+
+void TimerStopSound(string &in asTimer)
+{
+	StopSound("creak", 0.4);
+    PlaySoundAtEntity("", "close_door.snt", "door1_autoclose", 0, false);
+}
+
+/////////////////////////////////////////////////////////
+
+//ouverture porte cellar/////////////////////////////////
+
+void TouchCave(string& asEntity)
+{
+    AddQuest("removeplank2","removeplank2");
+}
+
+void UseHammerOnPlank(string &in asItem, string &in asEntity)
+{
+	SetEntityActive("plank2", false);
+	SetEntityActive("plank2_broken", true);
+	PlaySoundAtEntity("", "break_wood.snt", asEntity, 0, false);
+    AddUseItemCallback("", "dortoire_keyCave", "cave", "UseKeyOnCave", true);
+	CompleteQuest("removeplank2","removeplank2");
+    AddQuest("unlockcave","unlockcave");
+}
+
+void UseKeyOnCave(string &in asItem, string &in asEntity)
+{
+    SetLevelDoorLocked("cave", false);
+    PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false);
+    CompleteQuest("unlockcave", "unlockcave");
+    RemoveItem("dortoire_keyCave");
+}

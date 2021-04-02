@@ -1,0 +1,270 @@
+void OnStart()
+{
+    AddEntityCollideCallback("Player", "AreaGruntSound1", "EventGruntSound1", true, 1);
+    AddEntityCollideCallback("Player", "AreaGrunt_1", "EventGruntSpawn1", true, 1);
+     AddEntityCollideCallback("servant_grunt_2", "AreaGruntDisable1", "EventGruntDisable1", true, 1);
+    AddUseItemCallback("", "crowbar_1", "door1", "UseCrowbarOnDoor", true);
+    AddEntityCollideCallback("crowbar_joint_1", "AreaBreakParticles", "BreakDoor", true, 1);
+    SetPlayerMoveSpeedMul(1);
+    SetSanityDrainDisabled(false);
+    SetLanternDisabled(false);
+}
+
+void OnEnter()
+{
+    AutoSave();
+    PlayMusic("06_amb", true, 1, 4, 0, false);
+}
+
+void TouchSuicideBody1(string& asEntity)
+{
+    SetMessage("message", "suicide_body", 3);
+}
+
+//Toucher la première valve////////////////////////////////////
+void TouchValve1(string& asEntity)
+{
+    SetMessage("message", "valve1", 3);
+    PlaySoundAtEntity("", "12_valve_stuck.snt", asEntity, 0, false);
+    SetEntityPlayerInteractCallback("ScriptArea_1", "TouchValve1", true);
+    AddTimer("", 1, "TimerTouchValve1");
+}
+
+void TimerTouchValve1(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("ScriptArea_1", "TouchValve1", false);
+}
+////////////////////////////////////////////////////////////////
+
+//Toucher la deuxième valve/////////////////////////////////////
+void TouchValve2(string& asEntity)
+{
+    SetMessage("message", "valve2", 3);
+    PlaySoundAtEntity("", "oil_tank_empty.snt", asEntity, 0, false);
+    SetEntityPlayerInteractCallback("ScriptArea_2", "TouchValve2", true);
+    AddTimer("", 1, "TimerTouchValve2");
+}
+
+void TimerTouchValve2(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("ScriptArea_2", "TouchValve2", false);
+}
+////////////////////////////////////////////////////////////////
+
+//Evenement mec qui se fait tuer////////////////////////////////
+void EventGruntSound1(string &in asParent, string &in asChild, int alState)
+{
+    SetSwingDoorClosed("door_grunt_scare1", true, false);
+	SetSwingDoorDisableAutoClose("Door", true);
+ 
+	PlaySoundAtEntity("creak", "joint_door_move_special.snt", "door_grunt_scare1", 1, false);
+ 
+	AddTimer("", 0.2, "TimerStopSound");
+	AddTimer("Door", 0, "TimerMoveDoor");
+
+    AddTimer("", 0.7, "TimerSoundGrunt1");
+    AddTimer("", 1.5, "TimerHumanCry");
+    AddTimer("", 3.4, "TimerGruntHit");
+    AddTimer("", 5, "TimerSoundGrunt2");
+    AddTimer("", 7, "TimerUnlockDoor");
+}
+
+void TimerMoveDoor(string &in asTimer)
+{
+	if(GetLocalVarInt("VarDoor") == 10) return;
+	AddLocalVarInt("VarDoor", 1);
+ 
+	AddTimer(asTimer, 0.03, "TimerMoveDoor");
+ 
+	AddPropForce(asTimer, 70, 0, 0, "world");
+}
+
+void TimerStopSound(string &in asTimer)
+{
+	StopSound("creak", 0.4);
+    PlaySoundAtEntity("", "close_door.snt", "door_grunt_scare1", 0, false);
+    PlaySoundAtEntity("", "lock_door.snt", "door_grunt_scare1", 0, false);
+    SetSwingDoorLocked("door_grunt_scare1", true, true);
+}
+
+void TimerSoundGrunt1(string &in asTimer)
+{
+    PlaySoundAtEntity("", "amb_alert.snt", "soundGrunt1", 0, false);
+}
+
+void TimerHumanCry(string &in asTimer)
+{
+    PlaySoundAtEntity("", "15_man_hunted.snt", "soundGrunt1", 0, false);
+}
+
+void TimerGruntHit(string &in asTimer)
+{
+    PlaySoundAtEntity("", "attack_claw_hit.snt", "soundGrunt1", 0, false);
+}
+
+void TimerSoundGrunt2(string &in asTimer)
+{
+    PlaySoundAtEntity("", "amb_alert.snt", "soundGrunt1", 0, false);
+}
+
+void TimerUnlockDoor(string &in asTimer)
+{
+    SetSwingDoorLocked("door_grunt_scare1", false, true);
+    SetEntityPlayerInteractCallback("door_grunt_scare1", "TouchDoorGrunt1", false);
+}
+///////////////////////////////////////////////////////////////
+
+//Enemies//////////////////////////////////////////////////////
+void TouchDoorGrunt1(string& asEntity)
+{
+    SetEntityActive("servant_grunt_1", true);
+    SetEntityPlayerInteractCallback("door_grunt_scare1", "TouchDoorGrunt1", true);
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_1", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_2", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_3", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_4", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_5", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_6", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_7", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_8", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_9", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_10", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_11", 1.0f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_12", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_13", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_14", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_15", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_16", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_17", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_18", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_19", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_20", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_21", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_22", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_23", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_24", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_25", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_26", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_27", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_28", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_29", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_30", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_31", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_32", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_33", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_34", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_35", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_36", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_37", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_38", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_39", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_40", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_41", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_42", 1.0f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_43", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_44", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_45", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_46", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_47", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_48", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_49", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_50", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_51", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_52", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_53", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_54", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_55", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_56", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_57", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_58", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_59", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_60", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_61", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_62", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_1", "PathGrunt1_63", 0.001f, "");
+}
+
+void EventGruntSpawn1(string &in asParent, string &in asChild, int alState)
+{
+    SetEntityActive("servant_grunt_2",true);
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_1", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_2", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_3", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_4", 2.0f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_5", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_6", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_7", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_8", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_9", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_10", 0.001f, "");
+    AddEnemyPatrolNode("servant_grunt_2", "PathGrunt2_11", 0.001f, "");
+}
+
+void EventGruntDisable1(string &in asParent, string &in asChild, int alState)
+{
+    SetEntityActive("servant_grunt_2",false);
+    CreateParticleSystemAtEntity("", "ps_enemy_disappear_per_bone.ps", "AreaGruntDisable1", false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void LookBody1(string &in asEntity, int alState)
+{
+    GiveSanityDamage(5, true);
+    SetMessage("message", "body_cave1", 3);
+}
+
+//toucher la porte avec une serrure cassée/////////////////////////////
+void TouchDoor1(string& asEntity)
+{
+    SetMessage("message", "brocken_lock", 2);
+}
+///////////////////////////////////////////////////////////////////////
+
+//quand on utilise le pied de biche////////////////////////////////////
+void UseCrowbarOnDoor(string &in asItem, string &in asEntity)
+{
+    RemoveItem("crowbar_1");
+    PlaySoundAtEntity("", "player_crounch.snt", "Player", 0.05, false);
+    AddTimer("", 0.2, "TimerPlaceCrowbar");
+}
+
+void TimerPlaceCrowbar(string &in asTimer)
+{
+    SetEntityActive("crowbar_joint_1", true);
+    PlaySoundAtEntity("", "puzzle_place_jar.snt", "crowbar_joint_1", 0, false);
+    SetEntityPlayerInteractCallback("door1", "TouchDoor1", true);
+}
+
+void BreakDoor(string &in asParent, string &in asChild, int alState)
+{
+	SetEntityActive("crowbar_joint_1", false);
+	SetEntityActive("crowbar_broken_1", true);
+ 
+	SetSwingDoorLocked("door1", false, false);
+	SetSwingDoorClosed("door1", false, false);
+	SetSwingDoorDisableAutoClose("door1", true);
+ 
+	AddPropImpulse("door1", 0, 0, 3, "world");
+ 
+	CreateParticleSystemAtEntity("", "ps_hit_wood.ps", "AreaBreakParticles", false);
+	PlaySoundAtEntity("", "break_wood_metal", "AreaBreakParticles", 0, false);
+ 
+	GiveSanityBoostSmall();
+ 
+	PlayMusic("15_puzzle_hole.ogg", false, 0.7, 0.1, 10, false);
+ 
+	AddTimer("", 0.1, "TimerPushDoor");
+}
+
+void TimerPushDoor(string &in asTimer)
+{
+	AddPropImpulse("door1", -4, 2, 1, "world");
+	AddTimer("", 1.1, "TimerDoorCanClose");
+}
+
+void TimerDoorCanClose(string &in asTimer)
+{
+	SetSwingDoorDisableAutoClose("door1", false);
+}
+/////////////////////////////////////////////////////////////////////
