@@ -1,0 +1,19 @@
+<LANGUAGE>
+  <CATEGORY Name="CustomStoryMain">
+    <Entry Name="Description">Un programme python sacré est caché dans ce chateau.</Entry>
+  </CATEGORY>
+
+====Level Door====
+  <CATEGORY Name="Levels">
+    <Entry Name="grand_hall_1">Chambre</Entry>
+    <Entry Name="grand_hall_2">Etude</Entry>
+    <Entry Name="grand_hall_3">Stockage</Entry>
+  </CATEGORY>
+
+====Messages====
+  <CATEGORY Name="message">
+    <Entry Name="leviers">Je ne sais pas à quoi ça sert alors je vais peut-être éviter d'y toucher pour l'instant</Entry>
+    <Entry Name="grosse_porte">La porte est fermée</Entry>
+  </CATEGORY>
+
+</LANGUAGE>

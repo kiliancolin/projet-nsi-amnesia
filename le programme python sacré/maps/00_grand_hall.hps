@@ -1,10 +1,21 @@
 void OnStart()
 {
-    
+    SetPropHealth("door1", 50);
 }
 
 void TouchLever(string &in asEntity)
 {
     SetMessage("message","leviers",3);
-    SetEntityActive("invisible_box_lever",true);
+}
+
+void TouchBigDoor(string &in asEntity)
+{
+    SetMessage("message","grosse_porte",2.5);
+    PlaySoundAtEntity("sons_grosse_porte", "close_gate.snt", "castle_gate_arched01_1", 0, true);
+    AddTimer("", 2, "TimerTouchBigDoor");
+}
+
+void TimerTouchBigDoor(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("castle_gate_arched01_1", "TouchBigDoor", true);
 }
