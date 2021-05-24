@@ -1,4 +1,0 @@
--salle secrète de chouchy
--chateau XVIII
-
--aventurier qui cherche le programme python sacré
