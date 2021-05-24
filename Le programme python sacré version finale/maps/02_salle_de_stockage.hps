@@ -1,0 +1,78 @@
+//Kilian Colin
+
+void OnStart() //s'execute quand on entre dans le niveau la première fois
+{
+
+}
+
+void OnEnter() //s'execute à chaque fois que l'on rentre dans le niveau
+{
+    PlayMusic("06_amb", true, 1, 4, 0, false);
+    AutoSave();
+}
+
+void TouchDoor1(string &in asEntity) //s'execute quand on touche la porte cellar_wood01_5 (je précise ici que la fonction TouchDoor1 est lié à la porte dans l'éditeur de niveau)
+{
+    SetEntityActive("barrel01_4", true); //active l'entitée barrel01_4 (il est placer de manière à roulé et donc peut faire peur au joueur)
+}
+
+void TookNote(string &in asEntity) // s'execute quand on prend la note dans la salle de stockage
+{
+    SetPropStaticPhysics("carpet_moveable_1", false); // fais l'entité carpet_moveable_1 puisse bouger
+    SetLightVisible("hint_light_1", false);
+    AddQuest("clef_tapis", "clef_tapis");
+}
+
+//Bruit de monstre derrière la porte/////
+void TouchDoor2(string &in asEntity) // s'execute quand on touche la porte door_brute
+{
+    PlaySoundAtEntity("", "amb_idle.snt", "AreaSound_Brute", 0, false); // fais un son de monstre (qui se nomme brute) à AreaSound_Brute
+    SetMessage("message", "brute", 2.5); // affiche le message brute de la catégorie message dans le extra_english.lang pendant 2,5s
+    AddTimer("", 2, "TimerTouchDoor"); //créé un Timer de 2s pour ne pas que l'on puisse activer la fonction TouchDoor2 en boucle
+}
+
+void TimerTouchDoor(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("door_brute", "TouchDoor2", true); // repermet d'interragir avec la porte door_brute
+}
+///////////////////////////////////////////
+
+void TookKey(string &in asEntity) //Fonction qui s'active quand on prend la clef caché sous le tapis
+{
+    CompleteQuest("clef_tapis", "clef_tapis");
+    AddEntityCollideCallback("Player", "AreaSpawn_Brute", "EventSpawn_Brute", true, 0); // Créé une zone de collision qui s'appel AreaSpawn_Brute et s'active quand le joueur entre dedans et active l'évenement EventSpawn_Brute
+}
+
+void EventSpawn_Brute(string &in asParent, string &in asChild, int alState) //s'active quand on rentre dans la zone de collision AreaSpawn_Brute
+{
+    SetEntityActive("servant_brute_1", true); //active l'entité servant_brute_1
+    SetPropHealth("door_brute", 0); // casse la porte derrière laquelle la brute est 
+    ShowEnemyPlayerPosition("servant_brute_1"); // donne à la brute la position du joueur
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_1", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_2", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_3", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_4", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_5", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_6", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_7", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_8", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_9", 0.01f, "");  //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_10", 0.01f, ""); // créé le chemin que va prendre la brute
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_11", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_12", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_13", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_14", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_15", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_16", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_17", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_18", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_19", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_20", 0.01f, ""); //
+    AddEnemyPatrolNode("servant_brute_1", "PathNodeArea_21", 0.01f, ""); //
+}
+
+void TouchValve(string &in asEntity) //s'active quand on touche la valve dans la salle de stockage
+{
+    PlaySoundAtEntity("", "12_valve_stuck.snt", "AreaSoundStuck", 0, false); //joue le son 12_valve_stuck.snt à AreaSoundStuck
+    SetMessage("message", "valve", 2.5); // affiche le message valve de la catégorie message dans le extra_english.lang pendant 2,5s
+}

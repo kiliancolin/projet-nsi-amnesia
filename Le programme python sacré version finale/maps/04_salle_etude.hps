@@ -1,0 +1,129 @@
+// Raphaël
+// MANGIN
+// La documentation utilisée : https://wiki.frictionalgames.com/page/HPL2/Engine_Scripts
+
+/////////////////////////////////////////////////
+// Initialisation de la salle d'étude
+void OnStart() //void OnStart est nécessaire car sans cela le fichier .map associé ne se lance pas.
+{
+    
+}
+
+void OnEnter()
+{
+    PlayMusic("03_amb.ogg", true, 1, 1, 0, false);
+    SetLocalVarInt("artefact_statue", 0);//Initialisation de la variable "artefact_statue" à 0
+    AddUseItemCallback("unlockCabinet", "key_tower_1", "cabinet_simple_1", "unlockCabinet_simple", true);  //Ajoute une interaction entre "key_tower_1" et "cabinet_simple_1" : Utiliser "key_tower_1" sur "cabinet_simple_1" appelle "unlockCabinet_simple"
+}
+/////////////////////////////////////////////////
+
+void shelf_secret_door_message(string &in asEntity)
+{
+    // Cette fonction sert à afficher un message lorsque l'on interagit avec l'armoire secrète
+    SetMessage("message", "secret_door", 2.5);
+}
+
+/////////////////////////////////////////////////
+// Les trois fonctions suivantes servent à incrémenter la variable locale "artefact_statue" et appellent la fonction "statueCount()" définie plus bas.
+
+void artefact_statue_1(string &in asEntity)
+{
+    AddLocalVarInt("artefact_statue", 1); //Incrémente la variable "artefact_statue" de 1
+    statueCount();  //Appelle la fonction "statueCount()"
+    PlaySoundAtEntity("statue_pickup", "pick_generic.snt", asEntity, 0, false);//Joue un son lorsque l'on prend la statue
+    SetLightVisible("PointLight_2", false); //Désactive la lumière bleue "PointLight_2"
+    SetEntityActive("items_artefact_statue_3", false);  //Désactive la statue "items_artefact_statue_3"
+    SetEntityActive("block_box_1", false);  //Désactive "block_box_1"
+}
+
+void artefact_statue_2(string &in asEntity)
+{
+    AddLocalVarInt("artefact_statue", 1); //Incrémente la variable "artefact_statue" de 1
+    statueCount();  //Appelle la fonction "statueCount()"
+    PlaySoundAtEntity("statue_pickup", "pick_generic.snt", asEntity, 0, false);//Joue un son lorsque l'on prend la statue
+    SetLightVisible("PointLight_1", false); //Désactive la lumière bleue "PointLight_1"
+    SetEntityActive("items_artefact_statue_2", false);  //Désactive la statue "items_artefact_statue_2"
+    SetEntityActive("block_box_2", false);  //Désactive "block_box_2"
+}
+
+void artefact_statue_3(string &in asEntity)
+{
+    AddLocalVarInt("artefact_statue", 1); //Incrémente la variable "artefact_statue" de 1
+    statueCount();  //Appelle la fonction "statueCount()"
+    PlaySoundAtEntity("statue_pickup", "pick_generic.snt", asEntity, 0, false);//Joue un son lorsque l'on prend la statue
+    SetLightVisible("PointLight_3", false); //Désactive la lumière bleue "PointLight_3"
+    SetEntityActive("artefact_statue_3", false);    //Désactive la statue "artefact_statue_3"
+    SetEntityActive("block_box_3", false);  //Désactive "block_box_3"
+}
+/////////////////////////////////////////////////
+
+void statueCount()
+{
+    // Cette fonction permet d'activer des mémentos (notes d'aide dans le jeu) lorsque l'on possède une ou deux statues et d'ouvrir l'armoire secrète lorsque l'on possède les trois statues, ainsi que d'activer la brute.
+    if  (GetLocalVarInt("artefact_statue") == 1)    //Si l'on possède une statue, cela va ajouter le premier memento et faire apparaitre l'item dans l'inventaire
+    {
+        AddQuest("statue1", "statue1");             //Fonction ajoutant le mémento
+        GiveItem("statue1", "items_artefact_statue.ent", "Artefact", "D:/Games/Steam/steamapps/common/Amnesia The Dark Descent/entities/nec_entities/item/items_artefact_statue/inventory_artifact_statue_x1.tga", 1); //Fonction ajoutant l'item dans l'inventaire
+    }
+    
+    if  (GetLocalVarInt("artefact_statue") == 2)    //Si l'on possède deux statues, supprime le premier mémento ajoute la statue2 dans l'inventaire et supprime l'ancienne icone : chaque icone à un chiffre, soit 1,2 ou 3, et changer l'icone à chaque statue ramassée donne un effet de compteur.
+    {
+        AddQuest("statue2", "statue2");     //Ajoute le deuxième mémento
+        CompleteQuest("statue1", "statue1");    //Supprime le premire mémento
+        GiveItem("statue2", "items_artefact_statue_x2.ent", "Artefact", "D:/Games/Steam/steamapps/common/Amnesia The Dark Descent/entities/nec_entities/item/items_artefact_statue/inventory_artifact_statue_x2.tga", 1); //Ajoute la deuxième statue dans l'inventaire
+        RemoveItem("statue1"); //Supprime la première statue de l'inventaire
+    }
+
+    if (GetLocalVarInt("artefact_statue") == 3) //Si le joueur possède les trois statues, ouvre la porte, fait apparaître une brute ainsi que son chemin et change inventaire et mémentos.
+    {   
+        GiveItem("statue3", "items_artefact_statue_x3.ent", "Artefact", "D:/Games/Steam/steamapps/common/Amnesia The Dark Descent/entities/nec_entities/item/items_artefact_statue/inventory_artifact_statue_x3.tga", 1);//Ajoute la dernière statue dans l'inventaire
+        RemoveItem("statue2");//Supprime la deuxième statue de l'inventaire
+        SetMoveObjectState("shelf_secret_door_rot_1", 0.75);//Ouvre l'armoire secrète "shelf_secret_door_rot_1" à 75%
+        CompleteQuest("statue2", "statue2");//Supprime le deuxième mémento
+        SetEntityActive("servant_brute_2", true);//Active la brute "servant_brute_2"
+        GiveSanityBoost();
+        PlayMusic("02_puzzle.ogg", false, 1, 0, 1, false);
+        //La suite de fonction ci-dessous correspond au chemin suivi par la brute, point par point.
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_1", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_2", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_3", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_4", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_5", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_6", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_7", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_8", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_9", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_10", 0.01f, "");
+        AddEnemyPatrolNode("servant_brute_2", "PathNodeArea_11", 0.01f, "");
+    }
+}
+
+void messageLock(string &in asEntity)
+{
+    // Cette fonction sert à afficher un message lorsque le joueur interagit avec l'armoire vérouillée
+    SetMessage("message", "locked_cabinet_simple", 2.5);
+}
+
+void unlockCabinet_simple(string &in item, string &in entity)
+{
+    // Cette fonction permet dans un premier temps de déverrouiller puis d'ouvrir l'armoire "cabinet_simple_1", puis d'activer le monstre se trouvant à l'intérieur et enfin d'ajouter un timer qui servira à faire diparaître le monstre.
+    SetSwingDoorLocked("cabinet_simple_1", false, false);//Déverrouille la porte de "cabinet_simple_1"
+    SetSwingDoorClosed("cabinet_simple_1", false, false);//Ouvre "cabinet_simple_1"
+    SetEntityActive("servant_brute_1", true);//Active "servant_brute_1" qui est cachée dans l'armoire
+    AddTimer("HallucinationTimer", 0.75, "HallucinationMonster");//Crée un timer qui va déclencher la fonction "HallucinationMonster" 0.75 secondes après son activation
+    RemoveItem("key_tower_1");//Retire la clé de l'inventaire après son utilisation.
+}
+
+void HallucinationMonster(string &in asTimer)
+{
+    // Ce timer sert à faire partir le monstre en fumée, littéralement, pour donner un effet d'hallucination.
+    FadeEnemyToSmoke("servant_brute_1", true);
+}
+
+/////////////////////////////////////////////////
+
+void Outro(string &in asEntity)
+{
+    FadeOut(3);
+    StartCredits("Outro.ogg", false, "Credits", "main_credits", 3); //Lance les credits : premier paramètre la musique, false car on ne veut pas jouer la musique en boucle, puis le nom de la category du texte à afficher dans le fichier .lang puis le nom de l'entrée dans le fichier et enfin le 3 permet de ne pas afficher les codes présents dans le jeu de base (0,1,2 affichent un code secret)
+}

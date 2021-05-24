@@ -1,0 +1,81 @@
+// Raphaël
+// MANGIN
+// La documentation utilisée : https://wiki.frictionalgames.com/page/HPL2/Engine_Scripts
+
+/////////////////////////////////////////////////
+//Initialisation de la chambre d'ami
+
+void OnStart()
+{
+
+}
+
+void OnEnter()
+{
+    // Cette fonction initialise un lien entre le marteau et les planches lorsque l'on rentre dans la pièce, les sauvegardes automatiques et joue la musique de la pièce.
+    PlayMusic("10_amb.ogg", true, 1, 1, 0, false);//Joue la musique
+    AddUseItemCallback("OpenBlockedDoor", "stone_hammer_1", "wooden_boards_block_1", "RemovePlanks", true);//Ajoute une interaction entre "stonne_hammer_1" et "wooden_boards_block_1" qui appelle "RemovePlanks()" définie plus bas.
+    AutoSave();//Sauvegarde automatique
+}
+/////////////////////////////////////////////////
+
+void TakeNote(string &in asEntity)
+{
+    //Cette fonction incrémente une variable globale "TookNote". Cela est en lien avec "00_grand_hall.hps"
+
+    AddGlobalVarInt("TookNote", 1);
+}
+/////////////////////////////////////////////////
+
+void PaintingCallback(string &in asEntity)
+{
+    // Cette fonction permet de débloquer le levier caché dans l'armoire et affiche un message lorsque le joueur interagis avec le tableau
+
+    SetMessage("message", "painting", 2.5);
+    SetLeverInteractionDisablesStuck("lever", true);
+}
+
+void OpenPainting(string &in asEntity, int alState)
+{
+    // Cette fonction désactive le tableau qui cache la note (code secret du grand hall) et active un tableau pour donner l'illusion d'un ouverture à la façon d'un porte. Et bloque le levier en position basse après son activtion
+    if (alState == 1)
+    {
+        SetEntityActive("paintClose", false);//Désactive le tableau qui cache la note
+        SetEntityActive("paintOpen", true);//Active le tableau qui est à côté
+        SetLeverStuckState("lever", 1, true);//Bloque le levier en position basse
+        SetLeverInteractionDisablesStuck("lever", false);//Le levier reste bloqué lorsque le joueur interagis avec lui
+    }
+}
+
+void RemovePlanks(string &in item, string &in entity)
+{
+    // Cette fonction sert à retirer les planches devant la porte et faire apparaître des planches cassées à la place des planches entières. Cela déverrouille aussi la porte.
+    SetEntityActive(entity, false);//Désactive les planches qui bloquent le passage
+    SetSwingDoorLocked("mansion_1", false, false);//Déverrouille la porte
+    CreateEntityAtArea("wooden_boards_block_broken_1", "wooden_boards_block_broken.ent", "ScriptArea_1", false);//Fait apparaître des planches cassées à la place des plaches normales.
+    RemoveItem("stone_hammer_1");//Retire le marteau de l'inventaire
+}
+
+void messageLever(string &in asEntity)
+{
+    // Cette fonction fait apparaitre un message une seule et unique fois lorsque l'on touche le levier pour la première fois.
+    SetMessage("message", "leverMessage", 2.5);
+}
+
+void messageInteraction(string &in asEntity)
+{
+    // Cette fonction sert à afficher un petit lorsque le joueur interagit avec certains objets inutiles dans le scénario.
+    SetMessage("message", "messageInutile", 2.5);
+}
+
+void messageCroix(string &in asEntity)
+{
+    //Cette fonction sert à afficher un message lorsque le joueur interagit avec la croix.
+    SetMessage("message", "prière", 2.5);
+}
+
+void messageNSI(string &in asEntity)
+{
+    // Cette fonction sert à afficher un message lorsque le joueur interagit avec le livre de nsi.
+    SetMessage("message", "livreNSI", 2.5);
+}

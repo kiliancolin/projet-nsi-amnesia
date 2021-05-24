@@ -1,0 +1,97 @@
+<LANGUAGE>
+  <CATEGORY Name="CustomStoryMain">
+    <Entry Name="Description">Un programme python sacré est caché dans ce chateau.</Entry>
+  </CATEGORY>
+
+====Level Door====
+  <CATEGORY Name="Levels">
+    <Entry Name="grand_hall_1">Chambre d'amis</Entry>
+    <Entry Name="grand_hall_2">Etude</Entry>
+    <Entry Name="grand_hall_3">Salle de stockage</Entry>
+
+    <Entry Name="stockage_1">Hall d'Entrée</Entry>
+
+    <Entry Name="chambre_ami_1">Grand Hall</Entry>
+
+    <Entry Name="Etude_Door">Hall d'Entrée</Entry>
+  </CATEGORY>
+
+====Panneau====
+  <CATEGORY Name="Sign">
+    <Entry Name="archive">Archive</Entry>
+    <Entry Name="etude">Etude</Entry>
+    <Entry Name="stockage">Salle de stockage</Entry>
+
+    <Entry Name="eau">Réservoir d'eau</Entry>
+  </CATEGORY>
+
+  ====LockedDoor====
+<CATEGORY Name="LockedLevelDoors">
+  <Entry Name="etude_locked_door">Je ne peux pas reculer si près du but.</Entry>
+</CATEGORY>
+
+====Messages====
+  <CATEGORY Name="message">
+    ==Hall d'entré==
+    <Entry Name="leviers">Je ne sais pas à quoi ça sert alors je vais peut-être éviter d'y toucher pour l'instant</Entry>
+    <Entry Name="grosse_porte">La porte est fermée</Entry>
+    <Entry Name="intro1">On m'a donné pour mission de trouver une note cachée dans un vieux chateau</Entry>
+    <Entry Name="intro2">Cette note renferme un programme python, mais pas n'importe lequel, un écrit par le Grand Manitou Rachid Chouchi, ce qui fait de ce programme le programme python sacré</Entry>
+    <Entry Name="intro3">C'est pour cela que je me rend aujourd'hui au chateau Castelmoore</Entry>
+    <Entry Name="intro4">Mon informateur m'a dit que ce programme est caché dans une sorte de salle d'étude.</Entry>
+    <Entry Name="chambre">Je n'ai plus besoin de retourner là bas</Entry>
+
+    ==Salle de stockage==
+    <Entry Name="brute">Il semble y avoir y avoir quelqu'un ou quelque chose derrière cette porte, je ferai mieux de ne pas trop l'embeter</Entry>
+    <Entry Name="valve">La valve est rouillée</Entry>
+
+    ==Etude==
+    <Entry Name="secret_door"> Cette étagère semble différente des autres ...</Entry>
+    <Entry Name="locked_cabinet_simple">Je ne pourrai pas l'ouvrir sans la clé.</Entry>
+
+    ==Chambre d'ami==
+    <Entry Name="painting">Ce tableau cache un mécanisme, il devrait y avoir un levier quelque part.</Entry>
+    <Entry Name="leverMessage">Je ne sais à quoi ça sert, je ferais mieux de ne pas y toucher.</Entry>
+    <Entry Name="messageInutile">Je n'ai pas besoin de ça, c'est autre chose que je cherche</Entry>
+    <Entry Name="prière">Je n'ai pas le temps de m'arrêter faire un prière</Entry>
+    <Entry Name="livreNSI">NSI augmentation jusqu'à 100</Entry>
+  </CATEGORY>
+
+====Note====
+  <CATEGORY Name="Journal">
+    <Entry Name="Note_code_Name">Code pour le stockage</Entry>
+    <Entry Name="Note_code_Text">[br][br]Comment utiliser la machine pour ouvrir le stockage:[br][br]Premièrement il faut activer la valve au centre de la pièce pour activer le flux de vapeur.[br][br]Suite à cela les leviers peuvent être activés, il faut entrer la bonne séquence pour faire passer la vapeur comme il faut.[br][br]Une fois la séquence entrée il faut appuyer sur le bouton situé à droite des leviers. Si la séquences est bonne vous devriez entendre le son des engrenages dans la machine s'actionner, sinon les levier seront remis à leurs positions initiales.[br][br][br][br][br]La bonne séquence à entrer est: [br]- levier 1: 0101 [br]- levier 2: 0011 [br]- levier 3: 0100 [br]- levier 4: 0101 [br]- levier 5: 0110 [br]- levier 6: 0010[br][br]A noter que si vous entendez les engrenages la grille bloquant l'accès à la salle de stockage sera directement ouverte sans action supplémentaire.</Entry>
+
+    <Entry Name="secret_door">Cette étagère semble différente des autres ...</Entry>
+
+    <Entry Name="Note_tapis_Name">Clef vers l'étude</Entry>
+    <Entry Name="Note_tapis_Text">Je sais qui vous êtes,[br][br]je sais ce que vous cherchez...[br][br]Sous le tapis dans le bureau de la salle de stockage.[br][br]R.C.</Entry>
+
+    <Entry Name="Note_secretShelf_Name">Etrange artefact</Entry>
+    <Entry Name="Note_secretShelf_Text">Ces petites statues semblent connectées entre elles par une puce.[br][br]Il devrait être possible de faire fonctionner un mécanisme lorsque les trois sont réunies...[br][br]R.C.</Entry>
+
+    <Entry Name="Note_secretShelf_Name">Etrange artefact</Entry>
+    <Entry Name="Note_secretShelf_Text">Ces petites statues semblent connectées entre elles par une puce.[br][br]Il devrait être possible de faire fonctionner un mécanisme lorsque les trois sont réunies...[br][br]R.C.</Entry>
+
+    ====Memento====
+    <Entry Name="Quest_door_etude_Text">Mon informateur a dit que le programme est caché derrière cette porte, il faut que je trouve la clef de la salle d'étude</Entry>
+    <Entry Name="Quest_grille_stockage_Text">La grille vers le stockage est fermée, je devrais pouvoir trouver un moyen de l'ouvrir</Entry>
+    <Entry Name="Quest_clef_tapis_Text">Il y a quelque chose cacché sous un tapis de la salle de stockage</Entry>
+    <Entry Name="Quest_statue1_Text">Il ne me manque plus que 2 statues.</Entry>
+    <Entry Name="Quest_statue2_Text">Il ne me manque plus qu'une statues.</Entry>
+  </CATEGORY>
+
+====Inventaire====
+  <CATEGORY Name="Inventory">
+    <Entry Name="ItemName_key_etude">Clef</Entry>
+    <Entry Name="ItemDesc_key_etude">Sur l'étiquette il est écrit Etude</Entry>
+    <Entry Name="ItemDesc_Artefact">Contient une puce permettant l'activation d'un mécanisme</Entry>
+    <Entry Name="ItemName_Artefact">Statue</Entry>
+  </CATEGORY>
+
+  ====Credits====
+<CATEGORY Name="Credits">
+  <Entry Name="main_credits">Je suis enfin parvenu à trouver le programme python sacré[br][br]Je repensais à toutes les horreurs que j'avais vues dans ce vieux château,[br]et me dirigeais vers la sortie,[br]espérant ne plus jamais avoir à remettre les pieds dans un tel endroit.[br][br][br][br][br]Thanks for playing[br][br]Made by Raphaël MANGIN and Kilian COLIN.</Entry>
+</CATEGORY>
+
+</LANGUAGE>

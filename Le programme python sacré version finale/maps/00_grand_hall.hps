@@ -1,0 +1,313 @@
+//Kilian Colin
+
+void OnStart() //tout ce qui ce fait quand on lance le niveau pour la première fois
+{
+    SetPlayerLampOil(25); //met le niveau d'huile de la lanterne à 25/100
+    AddUseItemCallback("", "key_etude", "etude_door", "UseKeyOnEtude", true); //créer une fonction qui va s'activer quand la clef key_etude est utilisée sur la porte etude_door
+    SetLightVisible("hint_light_1", false); //rend une lumière présente sur l'éditeur de niveau non visible
+    SetPlayerActive(false);       //Empêche le joueur de pouvoir se déplacer pendant l'intro
+    SetPropHealth("door1", 50);     //fait que la porte "door1" soit abimée 
+    SetGlobalVarInt("TookNote", 0);  //
+    SetLocalVarInt("nLever", 0);     // créé des variable
+    SetLocalVarInt("touchLever", 0); //
+    AddTimer("", 3, "TimerIntro1"); //créé un timer de 3s où l'intro commence quand il est fini
+    AddEntityCollideCallback("Player", "AreaGrilleStockage", "EventMementoGrilleStockage", true, 0); //créé une zone de collision AreaGrilleStockage qui active la fonction EventMementoGrilleStockage quand le joueur rentre dedans
+}
+
+//Intro////
+void TimerIntro1(string &in asTimer) 
+{
+    SetMessage("message","intro1",5);
+    AddTimer("", 5, "TimerIntro2");
+}
+
+void TimerIntro2(string &in asTimer)
+{
+    SetMessage("message","intro2",10);
+    AddTimer("", 10, "TimerIntro3");
+}
+
+void TimerIntro3(string &in asTimer)
+{
+    SetMessage("message","intro3",5);
+    AddTimer("", 5, "TimerIntro4");
+}
+
+void TimerIntro4(string &in asTimer)
+{
+    SetMessage("message","intro4",5);
+    AddTimer("", 5, "TimerIntro5");
+}
+
+void TimerIntro5(string &in asTimer)
+{
+    TeleportPlayer("PlayerStartArea_5"); //téléporte le joueur à PlayerStartArea_5
+    SetPlayerActive(true); //Permet au joueur de pouvoir se déplacer après l'intro
+}
+//////////////////
+
+void OnEnter() //s'execute à chaque fois qu'on rentre dans le niveau
+{
+    PlayMusic("02_amb_safe", true, 1, 10, 0, false); //joue la musique 02_amb_safe
+    AutoSave(); 
+    int takenote = GetGlobalVarInt("TookNote");
+
+    if (takenote==1) //Test si la note dans le niveau "chambre d'amis a été prise
+    {
+        SetEntityPlayerInteractCallback("level_wood_3", "TouchLevelChambre", false); //active la fonction TouchLevelChambre qui s'active quand on touche la porte level_wood_3
+        SetLevelDoorLocked("level_wood_3", true); //rend la porte level_wood_3 fermée
+        SetLightVisible("hint_light_1", true);
+        SetEntityActive("invisible_box_lever",false);   //
+        SetEntityActive("invisible_box_lever_1",false); // désactive les murs invisibles pour pouvoir actionner la machine
+        SetEntityActive("invisible_box_lever_2",false); //
+        SetPropStaticPhysics("valve_iron_1", false);             //
+        SetPropStaticPhysics("lever_machine_lever01_1", false);  //
+        SetPropStaticPhysics("lever_machine_lever01_2", false);  //
+        SetPropStaticPhysics("lever_machine_lever01_3", false);  // Permet aux 6 levier et à la valve de pouvoir bouger
+        SetPropStaticPhysics("lever_machine_lever01_4", false);  //
+        SetPropStaticPhysics("lever_machine_lever01_5", false);  //
+        SetPropStaticPhysics("lever_machine_lever01_6", false);  //
+        SetLocalVarInt("lever",0);
+    }
+
+    if (HasItem("key_etude") == true) //test si la clef de l'étude a été prise dans le stockage
+    {
+        SetEntityPlayerInteractCallback("level_celler_1", "TouchLevelStockage", false); //active la fonction TouchLevelStockage qui s'active quand on touche la porte level_celler_1
+        SetLevelDoorLocked("level_celler_1", true); //rend la porte level_celler_1 fermée
+    }
+}
+
+void Valve(string &in asEntity, int alState) //s'execute quand on tourne la valve
+{
+    if(alState == 1) //test si la valve a été tournée 
+    {
+        SetLightVisible("hint_light_1", false);
+        SetWheelStuckState("valve_iron_1", 1, true); // bloque la valve une fois qu'elle a été tournée
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_1", "Lever"); //
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_2", "Lever"); //
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_3", "Lever"); //
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_4", "Lever"); // active la fonction Lever pour chaque levier qui s'execute quand un active le levier
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_5", "Lever"); //
+        SetEntityConnectionStateChangeCallback("lever_machine_lever01_6", "Lever"); //
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_1", true); //
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_2", true); //
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_3", true); //
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_4", true); // créé des particule de vapeur aux 6 AreaParticleSteam_i
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_5", true); //
+        CreateParticleSystemAtEntity("", "ps_steam.ps", "AreaParticleSteam_6", true); //
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_1", 0, true); //
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_2", 0, true); //
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_3", 0, true); // 
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_4", 0, true); // fait un son de vapeur aux 6 AreaParticleSteam_i
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_5", 0, true); // 
+        PlaySoundAtEntity("", "puzzle_gas.snt", "AreaParticleSteam_6", 0, true); //
+    }
+}
+
+void TouchButton2(string &in asEntity) //Quand on touche le levier après avoir récupéré la note (il ne se passe rien si on a pas activer tous les leviers)
+{
+    PlaySoundAtEntity("", "switch_min_max02.snt", "button_simple_1", 0, true); // fait un son de bouton à button_simple_1 
+    if(GetLocalVarInt("nLever") == 6) //cas ou on a entré la bonne séquence
+    {
+        GiveSanityBoost();
+        SetLocalVarInt("touchLever", 0); 
+        SetMoveObjectState("castle_portcullis_1", 1.0f); // ouvre la grille astle_portcullis_1
+        PlaySoundAtEntity("", "13_machine_extra.snt", "SoundArea1", 0, true); // joue un son d'engrenage pour montrer que la machine fonctionne
+        PlayMusic("13_puzzle_machine.ogg", false, 10, 1, 1, false); // joue une musique victorieuse pour faire comprendre que c'est bien ce qu'il fallait faire
+        CompleteQuest("grille_stockage", "grille_stockage"); //supprime la quête grille_stockage
+
+        AddTimer(asEntity, 0.4f, "TimerOpenGate"); // créé un Timer pour éviter que la grille s'ouvre à l'infini
+    }
+
+    if(GetLocalVarInt("touchLever") == 6) //cas où on a entré une mauvaise séquence, tout ce réinitialise et un son d'engrenage qui ne tourne pas bien est joué 
+    {
+        SetLocalVarInt("touchLever", 0);
+        SetLocalVarInt("nLever", 0);
+        PlaySoundAtEntity("", "13_machine_fail.snt", "SoundArea1", 0, true);
+        SetLeverStuckState("lever_machine_lever01_1", 0, false);
+        SetLeverStuckState("lever_machine_lever01_2", 0, false);
+        SetLeverStuckState("lever_machine_lever01_3", 0, false);
+        SetLeverStuckState("lever_machine_lever01_4", 0, false);
+        SetLeverStuckState("lever_machine_lever01_5", 0, false);
+        SetLeverStuckState("lever_machine_lever01_6", 0, false);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_1", 0, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_2", 0, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_3", 0, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_4", 0, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_5", 0, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_6", 0, true);
+    }
+}
+
+void TimerOpenGate(string &in asTimer)
+{
+    SetMoveObjectState(asTimer, 0.00f); //Arrête l'ouverture de la grille
+}
+
+void Lever(string &in asEntity, int alState) // s'execute quand on active un levier
+{
+    if(alState == -1) // cas de si on lève le levier
+    {
+        if(asEntity == "lever_machine_lever01_1") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_1", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_1", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_2") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_2", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_2", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_3") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_3", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_3", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_4") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_4", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_4", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_5") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_5", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_5", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_6") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_6", -1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_6", 0, true);
+        }
+    }
+
+
+    if(alState == 1) // cas de si on baisse le levier
+    {
+        if(asEntity == "lever_machine_lever01_1") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_1", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_1", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_2") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_2", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_2", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_3") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_3", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_3", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_4") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_4", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_4", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_5") 
+        {
+        AddLocalVarInt("nLever", 1);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_5", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_5", 0, true);
+        }
+
+        if(asEntity == "lever_machine_lever01_6") 
+        {
+        AddLocalVarInt("nLever", 0);
+        AddLocalVarInt("touchLever", 1);
+        SetLeverStuckState("lever_machine_lever01_6", 1, true);
+        PlaySoundAtEntity("", "lever_metal_min_max.snt", "lever_machine_lever01_6", 0, true);
+        }
+    }
+}
+
+//Fonction truc qu'on touche///////////////////////
+void TouchLever(string &in asEntity) //s'execute quand on touche un des 3 murs invisible dans la machine
+{
+    SetMessage("message","leviers",3); // affiche le message levier de la catégorie message dans le extra_english.lang pendant 3s
+}
+
+void TouchButton1(string &in asEntity) //s'execute quand on touche un des 3 murs invisible dans la machine
+{
+    SetMessage("message","leviers",3); // affiche le message levier de la catégorie message dans le extra_english.lang pendant 3s
+}
+
+void TouchValve(string &in asEntity) //s'execute quand on touche un des 3 murs invisible dans la machine
+{
+    SetMessage("message","leviers",3); // affiche le message levier de la catégorie message dans le extra_english.lang pendant 3s
+}
+
+void TouchBigDoor(string &in asEntity) // s'execute quand on touche la porte castle_gate_arched01_1
+{
+    SetMessage("message","grosse_porte",2.5); // affiche le message grosse_porte de la catégorie message dans le extra_english.lang pendant 2,5s
+    PlaySoundAtEntity("sons_grosse_porte", "close_gate.snt", "castle_gate_arched01_1", 0, true);
+    AddTimer("", 2, "TimerTouchBigDoor"); //créer un Timer qui dure 2s pour ne pas que l'on puisse activer la fonction TouchBigDoor en boucle
+}
+
+void TimerTouchBigDoor(string &in asTimer)
+{
+    SetEntityPlayerInteractCallback("castle_gate_arched01_1", "TouchBigDoor", true); // repermet d'intérragire avec la porte castle_gate_arched01_1
+}
+///////////////////////////////////////////////////
+
+void UseKeyOnEtude(string &in asItem, string &in asEntity) // s'execute quand on utilise la clef de l'étude sur la porte de l'étude
+{
+    SetLevelDoorLocked("etude_door", false); //ouvre la porte etude_door
+    PlaySoundAtEntity("", "unlock_door.snt", asEntity, 0, false); //joue le son unlock_door.snt
+    CompleteQuest("door_etude", "door_etude"); // supprime la quête door_etude
+    RemoveItem("key_etude"); //supprime l'objet key_etude de l'inventaire du joueur
+}
+
+void TouchLevelChambre(string &in asEntity)
+{
+    SetMessage("message","chambre",2.5);
+}
+
+void TouchLevelStockage(string &in asEntity)
+{
+    SetMessage("message","chambre",2.5);
+}
+
+void TouchEtude(string &in asEntity)
+{
+    AddQuest("door_etude", "door_etude"); //ajoute la quête door_etude
+}
+
+void EventMementoGrilleStockage(string &in asParent, string &in asChild, int alState)
+{
+    AddTimer("", 1.5, "TimerMementoGrilleStockage");
+}
+
+void TimerMementoGrilleStockage(string &in asTimer)
+{
+    AddQuest("grille_stockage", "grille_stockage"); //ajoute la quête grille_stockage
+}
